@@ -3,15 +3,34 @@
   "version": "0.0.1",
   "description": "Cypress reporter for Zephyr",
   "main": "./dist/index.js",
-  "author": {
-    "name": "Yevhen Laichenkov",
-    "email": "elaichenkov@gmail.com"
+  "author": "Yevhen Laichenkov <elaichenkov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elaichenkov/cypress-zephyr.git"
   },
+  "bugs": {
+    "url": "https://github.com/elaichenkov/cypress-zephyr/issues"
+  },
+  "homepage": "https://github.com/elaichenkov/cypress-zephyr#readme",
+  "keywords": [
+    "cypress",
+    "e2e",
+    "zephyr",
+    "reporter",
+    "testing",
+    "plugin"
+  ],
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint . --ext .ts",
+    "prebuild": "npm run lint",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "npx tsc && npx cypress run"
+    "release": "release-it --github.release",
+    "release:ci": "npm run release -- --ci --npm.skipChecks --no-git.requireCleanWorkingDir",
+    "release:patch": "npm run release -- patch",
+    "release:minor": "npm run release -- minor",
+    "release:major": "npm run release -- major"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
@@ -31,6 +50,7 @@
     "eslint-plugin-n": "^16.3.1",
     "eslint-plugin-promise": "^6.1.1",
     "form-data": "^4.0.0",
+    "release-it": "^17.0.0",
     "table": "^6.8.1",
     "typescript": "^5.3.2"
   }

@@ -1,0 +1,4 @@
+cypress/
+examples/
+cypress.config.ts
+src/

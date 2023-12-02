@@ -15,7 +15,7 @@ npm install -D cypress-zephyr
 You need to add the following to your `cypress.config.ts` file:
 
 ```ts
-import zephyrPlugin from 'cypress-zephyr';
+import zephyrPlugin from 'cypress-zephyr/dist/plugin';
 
 export default defineConfig({
   reporter: 'cypress-zephyr',

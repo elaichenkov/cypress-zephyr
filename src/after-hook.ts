@@ -32,6 +32,20 @@ function mergeZephyrReports(): string | null {
 }
 
 function getZephyrOptions(results: CypressCommandLine.CypressRunResult): ServiceOptions {
+  if (
+    results.config.reporter === 'cypress-multi-reporters' &&
+    results.config.reporterOptions.reporterEnabled.includes('cypress-zephyr')
+  ) {
+    return {
+      projectKey: results.config.reporterOptions.cypressZephyrReporterOptions.projectKey,
+      authorizationToken: results.config.reporterOptions.cypressZephyrReporterOptions.authorizationToken,
+      testCycle: results.config.reporterOptions.cypressZephyrReporterOptions.testCycle,
+      autoCreateTestCases: results.config.reporterOptions.cypressZephyrReporterOptions.autoCreateTestCases,
+      nodeInternalTlsRejectUnauthorized:
+        results.config.reporterOptions.cypressZephyrReporterOptions.nodeInternalTlsRejectUnauthorized,
+    };
+  }
+
   return {
     projectKey: results.config.reporterOptions.projectKey,
     authorizationToken: results.config.reporterOptions.authorizationToken,

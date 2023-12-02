@@ -1,10 +1,10 @@
 import { defineConfig } from 'cypress';
 // @ts-expect-error - no types
-import plugin from './dist/src/plugin';
+import plugin from 'cypress-zephyr/dist/plugin';
 
 export default defineConfig({
   screenshotOnRunFailure: false,
-  reporter: './dist/src/base',
+  reporter: 'cypress-zephyr',
   reporterOptions: {
     projectKey: 'BRE',
     authorizationToken: process.env.ZEPHYR_AUTHORIZATION_TOKEN,

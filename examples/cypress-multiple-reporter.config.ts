@@ -1,9 +1,8 @@
 import { defineConfig } from 'cypress';
 import { initPlugins } from 'cypress-plugin-init';
-// @ts-expect-error - no types
 import awesomeReporter from 'cypress-mochawesome-reporter/plugin';
 // @ts-expect-error - no types
-import zephyrPlugin from './dist/src/plugin';
+import zephyrPlugin from 'cypress-zephyr/dist/plugin';
 
 export default defineConfig({
   screenshotOnRunFailure: false,

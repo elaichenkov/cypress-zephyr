@@ -1,5 +1,4 @@
 import { defineConfig } from 'cypress';
-// @ts-expect-error - no types
 import { beforeRunHook as awesomeBeforeHook, afterRunHook as awesomeAfterHook } from 'cypress-mochawesome-reporter/lib';
 import { beforeRunHook as zephyrBeforeHook } from '../src/before-hook';
 import { afterRunHook as zephyrAfterHook } from '../src/after-hook';

@@ -4,9 +4,14 @@ import { cypressReportPath } from './archive';
 type Options = {
   projectKey: string;
   authorizationToken: string;
+  cypressZephyrReporterOptions?: Options;
 };
 
 function validateOptions(options: Options) {
+  if (options.cypressZephyrReporterOptions) {
+    options = options.cypressZephyrReporterOptions as Options;
+  }
+
   if (!options.projectKey) throw new Error('[zephyr reporter] "projectKey" is required');
   if (!options.authorizationToken) throw new Error('[zephyr reporter] "authorizationToken" env is required');
 }

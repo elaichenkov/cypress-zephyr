@@ -1,6 +1,6 @@
 {
   "name": "cypress-zephyr",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cypress reporter for Zephyr",
   "main": "./dist/index.js",
   "author": "Yevhen Laichenkov <elaichenkov@gmail.com>",

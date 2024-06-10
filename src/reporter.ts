@@ -8,13 +8,17 @@ const { EVENT_RUN_END, EVENT_TEST_FAIL, EVENT_TEST_PASS, EVENT_TEST_PENDING } = 
 
 export class Reporter {
   private readonly projectKey: string;
-  private readonly testResults: ZephyrTestResult[] = [];
+  private testResults: ZephyrTestResult[] = [];
   private readonly testCaseKeyRegex = /\[(.*?)\]/;
   private readonly mochaRunner: Runner;
 
-  constructor(mochaRunner: Runner, projectKey: string) {
+  private readonly mergeSameTestExecutions: boolean;
+
+
+  constructor(mochaRunner: Runner, reporterOptions: any) {
     this.mochaRunner = mochaRunner;
-    this.projectKey = projectKey;
+    this.projectKey = reporterOptions.projectKey;
+    this.mergeSameTestExecutions = reporterOptions.mergeSameTestExecutions || false;
   }
 
   private convertStatus(status: string) {
@@ -35,14 +39,13 @@ export class Reporter {
       const result = this.convertStatus(test.state!);
 
       const comment = test.isFailed()
-        ? `<b>❌ Error Message: </b> <br> <span style="color: rgb(226, 80, 65);">${test.err?.name} - ${
-            test.err?.message
-            // @ts-expect-error - TODO: fix this
-          }</span> <br> <br> <b>📍 Code Frame:</b> <br> <span style="color: rgb(226, 80, 65);">${test.err?.codeFrame?.frame?.replaceAll(
-            '\n',
-            '<br>',
-            // @ts-expect-error - TODO: fix this
-          )}</span> <br> <br> <b> 📂 File Path:</b> <br>${test.err?.codeFrame?.absoluteFile}`
+        ? `<b>❌ Error Message: </b> <br> <span style="color: rgb(226, 80, 65);">${test.err?.name} - ${test.err?.message
+        // @ts-expect-error - TODO: fix this
+        }</span> <br> <br> <b>📍 Code Frame:</b> <br> <span style="color: rgb(226, 80, 65);">${test.err?.codeFrame?.frame?.replaceAll(
+          '\n',
+          '<br>',
+          // @ts-expect-error - TODO: fix this
+        )}</span> <br> <br> <b> 📂 File Path:</b> <br>${test.err?.codeFrame?.absoluteFile}`
         : undefined;
 
       this.testResults.push({
@@ -55,8 +58,43 @@ export class Reporter {
     }
   }
 
+  public getMergeStatus(testResults: ZephyrTestResult[]) {
+    if (testResults.some((item) => item.result === 'Fail')) {
+      return 'Fail';
+    }
+
+    if (testResults.some((item) => item.result === 'Blocked')) {
+      return 'Blocked';
+    }
+
+    if (testResults.some((item) => item.result === 'Not Executed')) {
+      return 'Not Executed';
+    }
+
+    return 'Pass';
+  }
+
+  public mergeExecutionResults(testResults: ZephyrTestResult[]) {
+    const result = this.getMergeStatus(testResults);
+    if (testResults[0]) {
+      const testCase = testResults[0].testCase;
+
+      this.testResults = [
+        { result, testCase },
+      ];
+    } else {
+      console.log(gray(`[zephyr reporter] Cannot report the aggregation of test executions`));
+      return;
+    }
+  }
+
   public createReport() {
     if (this.testResults.length) {
+
+      if (this.mergeSameTestExecutions) {
+        this.mergeExecutionResults(this.testResults)
+      }
+
       spawnSync('node', [`${__dirname}/create-report.js`], {
         stdio: 'inherit',
         env: Object.assign(process.env, {

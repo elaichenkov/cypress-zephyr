@@ -8,6 +8,7 @@ export default defineConfig({
   reporterOptions: {
     projectKey: 'BRE',
     authorizationToken: process.env.ZEPHYR_AUTHORIZATION_TOKEN,
+    mergeSameTestExecutions: true,
   },
   e2e: {
     setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) {

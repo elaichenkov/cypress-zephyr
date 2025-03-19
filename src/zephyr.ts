@@ -9,7 +9,7 @@ class BaseReporter extends reporters.Base {
   constructor(runner: Runner, options: MochaOptions) {
     super(runner, options);
 
-    this.reporter = new Reporter(runner, options.reporterOptions.projectKey);
+    this.reporter = new Reporter(runner, options.reporterOptions);
     this.reporter.setupZephyrReporter();
   }
 }

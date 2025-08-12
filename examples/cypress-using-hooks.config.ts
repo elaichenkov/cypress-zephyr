@@ -19,9 +19,9 @@ export default defineConfig({
       });
 
       on('after:run', async (results: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult) => {
-          await awesomeAfterHook();
-          zephyrAfterHook(results);
-        },
+        await awesomeAfterHook();
+        await zephyrAfterHook(results);
+      },
       );
     },
   },
